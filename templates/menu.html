@@ -1,0 +1,25 @@
+<!-- templates/menu.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Меню</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Меню Піцерії</h1>
+    <table>
+        <tr>
+            <th>Назва піци</th>
+            <th>Опис інградієнтів</th>
+            <th>Ціна</th>
+        </tr>
+        {% for pizza in pizzas %}
+        <tr>
+            <td>{{ pizza[0] }}</td>
+            <td>{{ pizza[1] }}</td>
+            <td>{{ pizza[2] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
