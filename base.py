@@ -3,36 +3,36 @@ import sqlite3
 
 app = Flask(__name__)
 
-# Конфігурація бази даних
+
 DATABASE = 'database.db'
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row  # Для зручного доступу до колонок за іменами
+    conn.row_factory = sqlite3.Row
     return conn
 
 @app.route('/')
 def index():
-    # Виведення головної сторінки
+
     return render_template('index.html')
 
 @app.route('/menu')
 def menu():
-    # Підключення до бази даних
+
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    # Вибірка всіх піц з таблиці
+
     cursor.execute("SELECT name, ingredients, price FROM pizzas")
     pizzas = cursor.fetchall()
     
-    # Закриття підключення
+
     conn.close()
     
-    # Передача даних у шаблон
+
     return render_template('menu.html', pizzas=pizzas)
 
-# Створення та наповнення таблиці pizzas
+
 def init_db():
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -50,6 +50,25 @@ def init_db():
                           VALUES (?, ?, ?)''', pizzas)
     conn.commit()
     conn.close()
+
+
+
+
+@app.route('/')
+def home():
+    return 'Головна сторінка'
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
+
+
 
 if __name__ == '__main__':
     init_db()  # Ініціалізація бази даних
